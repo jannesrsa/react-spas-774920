@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Home = ({ user }) => {
   return (
     <div className="container text-center">
@@ -14,18 +16,18 @@ const Home = ({ user }) => {
           </p>
           {!user && (
             <>
-              <a href="/register" className="btn btn-outline-primary mr-2">
+              <Link to="/register" className="btn btn-outline-primary mr-2">
                 Register
-              </a>
-              <a href="/login" className="btn btn-outline-primary mr-2">
+              </Link>
+              <Link to="/login" className="btn btn-outline-primary mr-2">
                 Log In
-              </a>
+              </Link>
             </>
           )}
           {user && (
-            <a href="/meetings" className="btn btn-primary">
+            <Link to="/meetings" className="btn btn-primary">
               Meetings
-            </a>
+            </Link>
           )}
         </div>
       </div>

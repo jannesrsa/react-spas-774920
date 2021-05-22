@@ -1,11 +1,5 @@
 const Register = ({ user }) => {
-  return (
-    <div className="text-center mt-4">
-      <a href="/" className="font-weight-bold text-primary pl-1">
-        Register
-      </a>
-    </div>
-  );
+  return <div className="text-center mt-4">Register</div>;
 };
 
 export default Register;
