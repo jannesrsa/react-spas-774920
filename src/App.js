@@ -1,14 +1,7 @@
-// Import React
-import React, { Component } from 'react';
+import Home from "./Home";
 
-import 'bootstrap/dist/css/bootstrap.css';
-
-import Home from './Home';
-
-class App extends Component {
-  render() {
-    return <Home />;
-  }
-}
+const App = () => {
+  return <Home />;
+};
 
 export default App;
