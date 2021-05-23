@@ -1,14 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import firebase from "./Firebase";
+
 import Home from "./Home";
 import Welcome from "./Welcome";
 import Navigation from "./Navigation";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./Login";
 import Meetings from "./Meetings";
 import Register from "./Register";
 
+export const provider = new firebase.auth.GoogleAuthProvider();
+
 const App = () => {
   const [user, setUser] = useState("Ray");
+
+  useEffect(() => {
+    const ref = firebase.database().ref("user");
+    ref.on("value", (snapshot) => {
+      let firebaseUser = snapshot.val();
+      setUser(firebaseUser);
+    });
+  }, []);
 
   return (
     <Router>
