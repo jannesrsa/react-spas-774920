@@ -1,16 +1,20 @@
 import { useState } from "react";
+import FormError from "./FormError";
 
 const Register = ({ user }) => {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [passOne, setPassOne] = useState("");
   const [passTwo, setPassTwo] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
 
+    setErrorMessage("");
+
     if (passOne !== passTwo) {
-      alert("Passwords don't match");
+      setErrorMessage("Passwords don't match");
       return;
     }
   };
@@ -24,6 +28,7 @@ const Register = ({ user }) => {
               <div className="card-body">
                 <h3 className="font-weight-light mb-3">Register</h3>
                 <div className="form-row">
+                  {errorMessage && <FormError theMessage={errorMessage} />}
                   <section className="col-sm-12 form-group">
                     <label
                       className="form-control-label sr-only"
