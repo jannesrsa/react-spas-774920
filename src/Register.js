@@ -1,5 +1,6 @@
 import { useState } from "react";
 import FormError from "./FormError";
+import firebase from "./Firebase";
 
 const Register = ({ user }) => {
   const [displayName, setDisplayName] = useState("");
@@ -17,6 +18,15 @@ const Register = ({ user }) => {
       setErrorMessage("Passwords don't match");
       return;
     }
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, passOne)
+      .catch((error) => {
+        if (error.message) {
+          setErrorMessage(error.message);
+        }
+      });
   };
 
   return (
