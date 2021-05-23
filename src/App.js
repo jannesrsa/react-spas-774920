@@ -12,7 +12,9 @@ import Register from "./Register";
 export const provider = new firebase.auth.GoogleAuthProvider();
 
 const App = () => {
-  const [user, setUser] = useState("Ray");
+  const [user, setUser] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     const ref = firebase.database().ref("user");
@@ -22,15 +24,32 @@ const App = () => {
     });
   }, []);
 
+  const registerUser = (displayName) => {
+    firebase.auth().onAuthStateChanged((firebaseUser) => {
+      firebaseUser
+        .updateProfile({
+          displayName: displayName,
+        })
+        .then(() => {
+          setUser(firebaseUser);
+          setDisplayName(displayName);
+          setUserId(firebaseUser.uid);
+        });
+    });
+  };
+
   return (
     <Router>
       <>
-        {user && <Welcome user={user} />}
         <Navigation user={user} />
+        {displayName && <Welcome user={displayName} />}
         <Route path="/" exact render={(props) => <Home user={user} />}></Route>
         <Route path="/login" render={(props) => <Login />}></Route>
         <Route path="/meetings" render={(props) => <Meetings />}></Route>
-        <Route path="/register" render={(props) => <Register />}></Route>
+        <Route
+          path="/register"
+          render={(props) => <Register registerUser={registerUser} />}
+        ></Route>
       </>
     </Router>
   );

@@ -1,13 +1,15 @@
 import { useState } from "react";
 import FormError from "./FormError";
 import firebase from "./Firebase";
+import { useHistory } from "react-router-dom";
 
-const Register = ({ user }) => {
+const Register = ({ registerUser }) => {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [passOne, setPassOne] = useState("");
   const [passTwo, setPassTwo] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const history = useHistory();
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -22,6 +24,11 @@ const Register = ({ user }) => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, passOne)
+      .then(() => {
+        registerUser(displayName);
+        console.log(`registerUser(${displayName})`);
+        history.push("/meetings");
+      })
       .catch((error) => {
         if (error.message) {
           setErrorMessage(error.message);
