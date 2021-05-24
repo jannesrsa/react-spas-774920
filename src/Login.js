@@ -1,18 +1,37 @@
 import { useState } from "react";
+import FormError from "./FormError";
+import firebase from "./Firebase";
+import { useHistory } from "react-router-dom";
 
 const Login = ({ user, setUser }) => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const history = useHistory();
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    setUser(email);
+    setErrorMessage("");
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        history.push("/meetings");
+      })
+      .catch((error) => {
+        if (error.message) {
+          setErrorMessage(error.message);
+        }
+      });
   };
 
   return (
     <div className="container" onSubmit={onSubmit}>
       <form>
         <div class="form-group">
+          {errorMessage && <FormError theMessage={errorMessage} />}
           <label for="exampleInputEmail1">Email address</label>
           <input
             type="email"
@@ -34,14 +53,16 @@ const Login = ({ user, setUser }) => {
             class="form-control"
             id="exampleInputPassword1"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div class="form-check">
+        {/* <div class="form-check">
           <input type="checkbox" class="form-check-input" id="exampleCheck1" />
           <label class="form-check-label" for="exampleCheck1">
             Check me out
           </label>
-        </div>
+        </div> */}
         <button type="submit" class="btn btn-primary">
           Submit
         </button>
