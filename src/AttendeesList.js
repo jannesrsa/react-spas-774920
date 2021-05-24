@@ -2,7 +2,6 @@ import { GoTrashcan, GoMail, GoStar } from "react-icons/go";
 import firebase from "./Firebase";
 
 const AttendeesList = ({ userID, meetingID, adminUser, attendees }) => {
-
   const deleteAttendee = (e, whichMeeting, whichAttendee) => {
     e.preventDefault();
 
@@ -29,8 +28,6 @@ const AttendeesList = ({ userID, meetingID, adminUser, attendees }) => {
   };
 
   const admin = adminUser === userID ? true : false;
-  console.log(`adminUser ${adminUser}`);
-  console.log(`userID ${userID}`);
 
   const myAttendees = attendees.map((item) => {
     return (

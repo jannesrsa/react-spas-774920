@@ -36,7 +36,7 @@ const Attendees = ({ adminUser }) => {
   const chooseRandom = () => {
     const randomAttendee = Math.floor(Math.random() * allAttendees.length);
     resetQuery();
-    setDisplayAttendees(allAttendees[randomAttendee]);
+    setDisplayAttendees([allAttendees[randomAttendee]]);
   };
 
   const resetQuery = () => {
