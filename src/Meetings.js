@@ -1,6 +1,7 @@
 import { useState } from "react";
+import MeetingList from "./MeetingList";
 
-const Meetings = ({ onAdd }) => {
+const Meetings = ({ onAdd, meetings, userId }) => {
   const [meetingName, setMeetingName] = useState("");
 
   const onSubmit = (e) => {
@@ -39,6 +40,25 @@ const Meetings = ({ onAdd }) => {
                 </div>
               </form>
             </div>
+          </div>
+        </div>
+        <div className="col-11 col-md-6 text-center">
+          <div className="card border-top-0 rounded-0">
+            {meetings && meetings.length > 0 && (
+              <>
+                <div className="card-body py-2">
+                  <h4 className="card-title font-weight-light m-0">
+                    Your Meetings
+                  </h4>
+                </div>
+                <div className="list-group list-group-flush">
+                  <MeetingList
+                    userId={userId}
+                    meetings={meetings}
+                  ></MeetingList>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

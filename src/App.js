@@ -16,7 +16,7 @@ const App = () => {
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
   const [meetings, setMeetings] = useState([]);
-  const [meetingCount, setMeetingCount] = useState(0);
+  // const [meetingCount, setMeetingCount] = useState(0);
 
   const history = useHistory();
 
@@ -42,7 +42,7 @@ const App = () => {
           }
 
           setMeetings(meetingList);
-          setMeetingCount(meetingList.length);
+          // setMeetingCount(meetingList.length);
         });
       } else {
         clearUser();
@@ -88,7 +88,7 @@ const App = () => {
 
   return (
     <>
-      <Navigation user={user} logOutUser={logOutUser} userId={userId} />
+      <Navigation user={user} logOutUser={logOutUser} />
       {displayName && (
         <Welcome userName={displayName} logOutUser={logOutUser} />
       )}
@@ -96,7 +96,9 @@ const App = () => {
       <Route path="/login" render={() => <Login />}></Route>
       <Route
         path="/meetings"
-        render={() => <Meetings onAdd={addMeeting} />}
+        render={() => (
+          <Meetings onAdd={addMeeting} meetings={meetings} userId={userId} />
+        )}
       ></Route>
       <Route
         path="/register"
