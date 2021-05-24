@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route, useHistory, withRouter } from "react-router-dom";
 import firebase from "./Firebase";
 
 import Home from "./Home";
@@ -15,6 +15,7 @@ const App = () => {
   const [user, setUser] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
+  const history = useHistory();
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((firebaseUser) => {
@@ -32,6 +33,19 @@ const App = () => {
     // });
   }, []);
 
+  const logOutUser = (e) => {
+    e.preventDefault();
+
+    setUser("");
+    setDisplayName("");
+    setUserId("");
+
+    firebase
+      .auth()
+      .signOut()
+      .then(() => history.push("/login"));
+  };
+
   const registerUser = (displayName) => {
     firebase.auth().onAuthStateChanged((firebaseUser) => {
       firebaseUser
@@ -47,20 +61,20 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <>
-        <Navigation user={user} />
-        {displayName && <Welcome userName={displayName} />}
-        <Route path="/" exact render={(props) => <Home user={user} />}></Route>
-        <Route path="/login" render={(props) => <Login />}></Route>
-        <Route path="/meetings" render={(props) => <Meetings />}></Route>
-        <Route
-          path="/register"
-          render={(props) => <Register registerUser={registerUser} />}
-        ></Route>
-      </>
-    </Router>
+    <>
+      <Navigation user={user} logOutUser={logOutUser} />
+      {displayName && (
+        <Welcome userName={displayName} logOutUser={logOutUser} />
+      )}
+      <Route path="/" exact render={(props) => <Home user={user} />}></Route>
+      <Route path="/login" render={(props) => <Login />}></Route>
+      <Route path="/meetings" render={(props) => <Meetings />}></Route>
+      <Route
+        path="/register"
+        render={(props) => <Register registerUser={registerUser} />}
+      ></Route>
+    </>
   );
 };
 
-export default App;
+export default withRouter(App);

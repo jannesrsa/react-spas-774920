@@ -26,7 +26,6 @@ const Register = ({ registerUser }) => {
       .createUserWithEmailAndPassword(email, passOne)
       .then(() => {
         registerUser(displayName);
-        console.log(`registerUser(${displayName})`);
         history.push("/meetings");
       })
       .catch((error) => {
