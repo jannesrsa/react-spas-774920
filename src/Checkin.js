@@ -19,8 +19,9 @@ const Checkin = () => {
 
     ref
       .push({
-        attendeeName: email,
-        attendeeEmail: displayName,
+        attendeeName: displayName,
+        attendeeEmail: email,
+        star: false,
       })
       .catch((error) => setErrorMessage(error.errorMessage));
   };
