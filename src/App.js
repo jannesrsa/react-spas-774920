@@ -62,7 +62,7 @@ const App = () => {
 
   return (
     <>
-      <Navigation user={user} logOutUser={logOutUser} />
+      <Navigation user={user} logOutUser={logOutUser} userId={userId} />
       {displayName && (
         <Welcome userName={displayName} logOutUser={logOutUser} />
       )}
