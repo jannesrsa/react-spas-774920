@@ -17,11 +17,19 @@ const App = () => {
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    const ref = firebase.database().ref("user");
-    ref.on("value", (snapshot) => {
-      let firebaseUser = snapshot.val();
-      setUser(firebaseUser);
+    firebase.auth().onAuthStateChanged((firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser);
+        setDisplayName(firebaseUser.displayName);
+        setUserId(firebaseUser.uid);
+      }
     });
+
+    // const ref = firebase.database().ref("user");
+    // ref.on("value", (snapshot) => {
+    //   let firebaseUser = snapshot.val();
+    //   setUser(firebaseUser);
+    // });
   }, []);
 
   const registerUser = (displayName) => {
@@ -42,7 +50,7 @@ const App = () => {
     <Router>
       <>
         <Navigation user={user} />
-        {displayName && <Welcome user={displayName} />}
+        {displayName && <Welcome userName={displayName} />}
         <Route path="/" exact render={(props) => <Home user={user} />}></Route>
         <Route path="/login" render={(props) => <Login />}></Route>
         <Route path="/meetings" render={(props) => <Meetings />}></Route>
