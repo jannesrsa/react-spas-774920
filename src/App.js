@@ -15,6 +15,9 @@ const App = () => {
   const [user, setUser] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
+  const [meetings, setMeetings] = useState([]);
+  const [meetingCount, setMeetingCount] = useState(0);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -23,16 +26,40 @@ const App = () => {
         setUser(firebaseUser);
         setDisplayName(firebaseUser.displayName);
         setUserId(firebaseUser.uid);
+
+        const meetingsRef = firebase
+          .database()
+          .ref(`meetings/${firebaseUser.uid}`);
+        meetingsRef.on("value", (snapshot) => {
+          let meetings = snapshot.val();
+          let meetingList = [];
+
+          for (let item in meetings) {
+            meetingList.push({
+              meetingID: item,
+              meetingName: meetings[item].meetingName,
+            });
+          }
+
+          setMeetings(meetingList);
+          setMeetingCount(meetingList.length);
+        });
+      } else {
+        clearUser();
       }
     });
   }, []);
 
-  const logOutUser = (e) => {
-    e.preventDefault();
-
+  const clearUser = () => {
     setUser("");
     setDisplayName("");
     setUserId("");
+  };
+
+  const logOutUser = (e) => {
+    e.preventDefault();
+
+    clearUser();
 
     firebase
       .auth()
@@ -65,15 +92,15 @@ const App = () => {
       {displayName && (
         <Welcome userName={displayName} logOutUser={logOutUser} />
       )}
-      <Route path="/" exact render={(props) => <Home user={user} />}></Route>
-      <Route path="/login" render={(props) => <Login />}></Route>
+      <Route path="/" exact render={() => <Home user={user} />}></Route>
+      <Route path="/login" render={() => <Login />}></Route>
       <Route
         path="/meetings"
-        render={(props) => <Meetings onAdd={addMeeting} />}
+        render={() => <Meetings onAdd={addMeeting} />}
       ></Route>
       <Route
         path="/register"
-        render={(props) => <Register registerUser={registerUser} />}
+        render={() => <Register registerUser={registerUser} />}
       ></Route>
     </>
   );
