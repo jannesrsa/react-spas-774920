@@ -25,12 +25,6 @@ const App = () => {
         setUserId(firebaseUser.uid);
       }
     });
-
-    // const ref = firebase.database().ref("user");
-    // ref.on("value", (snapshot) => {
-    //   let firebaseUser = snapshot.val();
-    //   setUser(firebaseUser);
-    // });
   }, []);
 
   const logOutUser = (e) => {
@@ -60,6 +54,11 @@ const App = () => {
     });
   };
 
+  const addMeeting = (meetingName) => {
+    const ref = firebase.database().ref(`meetings/${userId}`);
+    ref.push({ meetingName: meetingName });
+  };
+
   return (
     <>
       <Navigation user={user} logOutUser={logOutUser} userId={userId} />
@@ -68,7 +67,10 @@ const App = () => {
       )}
       <Route path="/" exact render={(props) => <Home user={user} />}></Route>
       <Route path="/login" render={(props) => <Login />}></Route>
-      <Route path="/meetings" render={(props) => <Meetings />}></Route>
+      <Route
+        path="/meetings"
+        render={(props) => <Meetings onAdd={addMeeting} />}
+      ></Route>
       <Route
         path="/register"
         render={(props) => <Register registerUser={registerUser} />}
