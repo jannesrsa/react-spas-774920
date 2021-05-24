@@ -1,5 +1,5 @@
 import { FaLink } from "react-icons/fa";
-import { GoTrashcan } from "react-icons/go";
+import { GoListUnordered, GoTrashcan } from "react-icons/go";
 import { useHistory } from "react-router";
 import firebase from "./Firebase";
 
@@ -34,6 +34,15 @@ const MeetingList = ({ userId, meetings }) => {
               }
             >
               <FaLink />
+            </button>
+
+            <button
+              className="btn btn-sm btn-outline-secondary"
+              onClick={(e) =>
+                history.push(`/attendees/${userId}/${meeting.meetingID}`)
+              }
+            >
+              <GoListUnordered />
             </button>
           </section>
         </section>
