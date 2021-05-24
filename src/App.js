@@ -8,6 +8,7 @@ import Navigation from "./Navigation";
 import Login from "./Login";
 import Meetings from "./Meetings";
 import Register from "./Register";
+import Checkin from "./Checkin";
 
 export const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -104,6 +105,8 @@ const App = () => {
         path="/register"
         render={() => <Register registerUser={registerUser} />}
       ></Route>
+
+      <Route path="/checkin/:userID/:meetingID" children={<Checkin />} />
     </>
   );
 };
